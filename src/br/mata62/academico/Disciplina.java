@@ -6,9 +6,6 @@ public class Disciplina {
 	private String codigoDaDisciplina;
 	private String nomeDaDisciplina;
 	private int cargaHoraria;
-	private int semestreSugerido;
-	private int numeroPreRequisitos;
-	protected boolean obrigatoria;
 	private TreeSet<Disciplina> preRequisito = new TreeSet<>();
 
 	public Disciplina(String codigoDaDisciplina, String nomeDaDisciplina, int cargaHoraria) {
@@ -17,28 +14,12 @@ public class Disciplina {
 		this.cargaHoraria = cargaHoraria;
 	}
 
-	public int getNumeroPreRequisitos() {
-		return numeroPreRequisitos;
-	}
-
-	public void setNumeroPreRequisitos(int numeroPreRequisitos) {
-		this.numeroPreRequisitos = numeroPreRequisitos;
-	}
-
 	public TreeSet<Disciplina> getPreRequisito() {
 		return preRequisito;
 	}
 
 	public void setPreRequsito(Disciplina disciplina) {
 		this.preRequisito.add(disciplina);
-	}
-
-	public int getSemestreSugerido() {
-		return semestreSugerido;
-	}
-
-	public void setSemestreSugerido(int semestreSugerido) {
-		this.semestreSugerido = semestreSugerido;
 	}
 
 	public String getCodigoDaDisciplina() {
@@ -76,6 +57,11 @@ public class Disciplina {
 		} else if (!codigoDaDisciplina.equals(other.codigoDaDisciplina))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Disciplina: " + codigoDaDisciplina + " " + nomeDaDisciplina;
 	}
 	
 }
