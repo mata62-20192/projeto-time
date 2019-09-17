@@ -8,8 +8,8 @@ import java.util.Comparator;
 import java.util.TreeSet;
 
 public class Universidade {
-	private String nomeDaUniversidade;
-	private String siglaDaUniversidade;
+	private String nome;
+	private String sigla;
 	private TreeSet<Curso> cursos = new TreeSet<>();
 	private TreeSet<Disciplina> disciplinas = new TreeSet<>();
 	private Comparator<Disciplina> comparador = new Comparator<Disciplina>() {
