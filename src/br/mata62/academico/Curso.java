@@ -1,27 +1,85 @@
 package br.mata62.academico;
-
-import java.util.TreeSet;
-import java.util.Comparator;
+import br.mata62.academico.ResultadoDisciplina.Natureza;
+import java.util.Map;
 import java.util.TreeMap;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Curso {
 	private String nomeDoCurso;
-	private TreeMap<Integer, TreeSet<Disciplina>> disciplinasOb = new TreeMap<Integer, TreeSet<Disciplina>>();
-	private TreeSet<Disciplina> disciplinasOp = new TreeSet<Disciplina>();
+	private String codigoDoCurso;
+	private TreeMap<Integer, Set<Disciplina>> disciplinasOb = new TreeMap<Integer, Set<Disciplina>>();
+	private Set<Disciplina> disciplinasOp = new HashSet<Disciplina>();
 	
-	public Curso(String nomeDoCurso) {
+	public Curso(String nomeDoCurso, String codigoDoCurso) {
 		this.nomeDoCurso = nomeDoCurso;
+		this.codigoDoCurso = codigoDoCurso;
 	}
-
+	
+	public void imprimirCurriculo() {
+		FileWriter arquivo;
+		String quebra = "\n";
+		try {
+			arquivo = new FileWriter(new File("Curriculo - " + getNomeDoCurso() + ".txt"));		
+						
+			arquivo.write("Curso: " + getNomeDoCurso() + quebra);
+			arquivo.write("Obrigatórias:" + quebra);
+			for(Map.Entry<Integer,Set<Disciplina>> entry : disciplinasOb.entrySet()) {		
+				  Set<Disciplina> disciplinasObg = entry.getValue();				  
+				  arquivo.write("Semestre: " + entry.getKey() + quebra + quebra);
+				  for(Disciplina disciplina : disciplinasObg) {
+					 String descricao = disciplina.getCodigoDaDisciplina() + " - " + disciplina.getNomeDaDisciplina() + "(" + disciplina.getCargaHoraria() + "h)" + quebra;
+					 arquivo.write(descricao);					 
+				  }
+				  arquivo.write(quebra + "----------------------------------------------------" + quebra);
+			}
+			arquivo.write("Optativas:" + quebra);
+			for(Disciplina disciplina : disciplinasOp) {
+				 String descricao = disciplina.getCodigoDaDisciplina() + " - " + disciplina.getNomeDaDisciplina() + "(" + disciplina.getCargaHoraria() + "h)" + quebra;
+				 arquivo.write(descricao);				 
+			  }		
+			arquivo.write(quebra + "----------------------------------------------------" + quebra);
+		
+			arquivo.close();		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public ResultadoDisciplina getDisciplinaByCodigo(String codigo) {
+		for(Map.Entry<Integer,Set<Disciplina>> entry : disciplinasOb.entrySet()) {		
+			  Set<Disciplina> disciplinas = entry.getValue();
+			  for(Disciplina disciplina : disciplinas) {
+				  if(disciplina.getCodigoDaDisciplina().equals(codigo)) {
+						ResultadoDisciplina resultado = new ResultadoDisciplina(disciplina, null, Natureza.Obrigatoria);
+						return resultado;
+					}
+			  }			  
+			}
+		for (Disciplina disciplina : disciplinasOp) {
+			if(disciplina.getCodigoDaDisciplina().equals(codigo)) {
+				ResultadoDisciplina resultado = new ResultadoDisciplina(disciplina, null, Natureza.Optativa);
+				return resultado;
+			}
+		}
+		return null;
+	}
+	
+	public String getCodigoDoCurso() { 
+		return codigoDoCurso;
+	}
+	
 	public String getNomeDoCurso() {
 		return nomeDoCurso;
 	}
 
-	public TreeMap<Integer, TreeSet<Disciplina>> getDisciplinasOb() {
+	public TreeMap<Integer, Set<Disciplina>> getDisciplinasOb() {
 		return disciplinasOb;
 	}
 
-	public TreeSet<Disciplina> getDisciplinasOp() {
+	public Set<Disciplina> getDisciplinasOp() {
 		return disciplinasOp;
 	}
 

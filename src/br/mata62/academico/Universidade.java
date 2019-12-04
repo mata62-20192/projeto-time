@@ -1,17 +1,19 @@
 package br.mata62.academico;
 
-
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.util.Set;
+
+import br.mata62.academico.ResultadoDisciplina.Natureza;
 
 public class Universidade {
-	private String nome;
-	private String sigla;
-	private TreeSet<Curso> cursos = new TreeSet<>();
-	private TreeSet<Disciplina> disciplinas = new TreeSet<>();
+	private String nomeDaUniversidade;
+	private String siglaDaUniversidade;
+	private Set<Curso> cursos = new HashSet<>();
+	private Set<Disciplina> disciplinas = new HashSet<>();
+	private Set<Aluno> alunos = new HashSet<Aluno>();
 	private Comparator<Disciplina> comparador = new Comparator<Disciplina>() {
 		public boolean compareTo(Disciplina a, Disciplina b) {
 			return 
@@ -25,11 +27,24 @@ public class Universidade {
 			return 0;
 		}
 		
-	};
+	};	
+	
+	public Set<Aluno> getAlunos() {
+		return this.alunos;
+	}
 	
 	public Universidade(String nomeDaUniversidade, String siglaDaUniversidade) {
 		this.nomeDaUniversidade = nomeDaUniversidade;
 		this.siglaDaUniversidade = siglaDaUniversidade;
+	}
+	
+	public Curso getCursoByCodigo(String codigoDoCurso) {
+		for(Curso curso : cursos) {
+			if(curso.getCodigoDoCurso().equals(codigoDoCurso)) {
+				return curso;
+			}
+		}
+		return null;
 	}
 	
 	public String getNomeDaUniversidade() {
@@ -40,41 +55,29 @@ public class Universidade {
 		return siglaDaUniversidade;
 	}
 
-	public TreeSet<Curso> getCursos() {
+	public Set<Curso> getCursos() {
 		return cursos;
 	}
 
-	public TreeSet<Disciplina> getDisciplinas() {
+	public Set<Disciplina> getDisciplinas() {
 		return disciplinas;
 	}
 	
-	public void adiciona(Curso curso){
-		Scanner teclado = new Scanner(System.in);
-		System.out.println("Informe número de semestres da disciplina");
-		int numeroDeSemestres = teclado.nextInt();
-		for (int i = 0; i < numeroDeSemestres; i++) {
-			System.out.println("Informe número de disciplinas no semestre " + i+1);
-			int numeroDeDisciplinas = teclado.nextInt();
-			TreeSet<Disciplina> conjuntoDeOb = new TreeSet<>(comparador);
-			for (int j = 0; j < numeroDeDisciplinas; j++) {
-				System.out.println("Informe código da disciplina, nome da disciplina e carga horária");
-				Disciplina disciplina = new Disciplina(teclado.next(), teclado.next(), teclado.nextInt());
-				conjuntoDeOb.add(disciplina);
-			}
-			curso.getDisciplinasOb().put(i, conjuntoDeOb);
-			disciplinas.addAll(conjuntoDeOb); //classcastexception
-		}
-		System.out.println("Informe número de disciplinas optativas");
-		int numeroDeDisciplinas = teclado.nextInt();
-		TreeSet<Disciplina> conjuntoDeOp = new TreeSet<Disciplina>(comparador);
-		for (int i = 0; i < numeroDeDisciplinas; i++) {
-			System.out.println("Informe código da disciplina, nome da disciplina e carga horária");
-			Disciplina disciplina = new Disciplina(teclado.next(), teclado.next(), teclado.nextInt());
-			conjuntoDeOp.add(disciplina);			
-		}
-		curso.getDisciplinasOp().addAll(conjuntoDeOp);
-		disciplinas.addAll(conjuntoDeOp);
+	public void adicionaCurso(Curso curso){
 		cursos.add(curso);
+	}
+	
+	public void adicionaAluno(Aluno aluno){
+		alunos.add(aluno);
+	}
+	
+	public Aluno getAlunoByMatricula(String matricula) {		
+		for (Aluno aluno : alunos) {
+			if(aluno.getMatricula().equals(matricula)) {				
+				return aluno;
+			}
+		}
+		return null;
 	}
 	
 }

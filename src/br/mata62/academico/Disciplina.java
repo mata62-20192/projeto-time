@@ -32,7 +32,7 @@ public class Disciplina {
 
 	public int getCargaHoraria() {
 		return cargaHoraria;
-	}
+	}	
 	
 	@Override
 	public int hashCode() {
