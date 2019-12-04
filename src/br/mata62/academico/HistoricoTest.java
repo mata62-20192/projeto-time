@@ -17,33 +17,24 @@ import org.junit.jupiter.api.Test;
 import br.mata62.academico.ResultadoDisciplina.Conceito;
 import br.mata62.academico.ResultadoDisciplina.Natureza;
 
-public class AlunoTest {	
-	
-	Aluno aluno;
+public class HistoricoTest {
+	Historico historicoAluno;
 	
 	@BeforeEach
 	public void init() {
-		 this.aluno = new Aluno("Lucas Evangelista","20191200","Abc1");
+		 Aluno aluno = new Aluno("Lucas Evangelista","20191200","Abc1");
+		 this.historicoAluno = new Historico(aluno);
 	}
 	
 	@Test
-	public void testCreateStudent() {
-		String expectedName = aluno.getNomeDoAluno();
-		String expectedId = aluno.getMatricula();
-		String expectedPassword = aluno.getSenhaDoAluno();
-		Historico expectedHistory = aluno.getHistorico();
-		Curso expectedCourse = aluno.getCursoDoAluno();
-		
-		assertTrue(expectedName.equals("Lucas Evangelista"));
-		assertTrue(expectedId.equals("20191200"));
-		assertTrue(expectedPassword.equals("Abc1"));
-		assertNull(expectedHistory);
-		assertNull(expectedCourse);
+	public void testValidateHistory() {
+		TreeMap resultStudentSubject = historicoAluno.getDisciplinasCursadas();
+		assertTrue(resultStudentSubject.isEmpty());
 	}
 	
 	@Test
-	public void testSetHistory() {
-		Historico historicoAluno = new Historico(aluno);
+	public void testSetSubjects() {
+
 		TreeMap<Integer, Set<ResultadoDisciplina>> disciplinasCursadas = new TreeMap<Integer, Set<ResultadoDisciplina>>();
 		Set<ResultadoDisciplina> disciplinasSemestre = new HashSet<ResultadoDisciplina>();
 		Disciplina disciplina;
@@ -58,22 +49,8 @@ public class AlunoTest {
 			disciplinasCursadas.put(i, disciplinasSemestre);
 		}
 		historicoAluno.setDisciplinasCursadas(disciplinasCursadas);
-		aluno.setHistorico(historicoAluno);
-		Historico expectedHistory = aluno.getHistorico();
+		TreeMap resultStudentSubject = historicoAluno.getDisciplinasCursadas();
 		
-		assertNotNull(expectedHistory);
-	}
-	
-	@Test
-	public void testSetCourse() {
-		String courseName = "Ciências da Computação";
-		String courseId = "CC001";
-		Curso cursoAluno = new Curso(courseName,courseId);
-		aluno.setCursoDoAluno(cursoAluno);
-		Curso expectedCourse = aluno.getCursoDoAluno();
-		
-		assertNotNull(expectedCourse);
-		assertTrue(expectedCourse.equals(cursoAluno));
-		
+		assertTrue(resultStudentSubject.equals(disciplinasCursadas));
 	}
 }
